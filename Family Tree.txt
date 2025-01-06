@@ -1,0 +1,82 @@
+% Facts about the family tree
+parent(john, alice).
+parent(mary, alice).
+parent(john, bob).
+parent(mary, bob).
+parent(alice, chris).
+parent(tom, chris).
+parent(alice, emma).
+parent(tom, emma).
+parent(bob, grace).
+parent(lucy, grace).
+
+% Rules for family relationships
+
+% A person is a mother if they are a female parent.
+mother(X, Y) :-
+    parent(X, Y),
+    female(X).
+
+% A person is a father if they are a male parent.
+father(X, Y) :-
+    parent(X, Y),
+    male(X).
+
+% Define male and female members of the family (example)
+male(john).
+male(bob).
+male(tom).
+male(chris).
+male(grace). % Assume grace is male for example purpose
+
+female(mary).
+female(alice).
+female(lucy).
+female(emma).
+
+% A sibling is someone who shares at least one parent.
+sibling(X, Y) :-
+    parent(P, X),
+    parent(P, Y),
+    X \= Y.
+
+% Grandparents: A grandparent is a parent of one of the child's parents.
+grandparent(X, Y) :-
+    parent(X, P),
+    parent(P, Y).
+
+% Uncle/Aunt: An uncle or aunt is a sibling of one of the child's parents.
+uncle_or_aunt(X, Y) :-
+    sibling(X, P),
+    parent(P, Y).
+
+% Cousins: Two people are cousins if their parents are siblings.
+cousin(X, Y) :-
+    parent(P1, X),
+    parent(P2, Y),
+    sibling(P1, P2).
+
+
+
+
+% 1. Who are Alice's parents?
+?- parent(P, alice).
+
+% 2. Who is Emma's father?
+?- father(F, emma).
+
+% 3. Are Bob and Alice siblings?
+?- sibling(alice, bob).
+
+% 4. Who are the grandparents of Chris?
+?- grandparent(G, chris).
+
+% 5. Who are the cousins of Chris?
+?- cousin(chris, X).
+
+% 6. Is Mary the mother of Alice?
+?- mother(mary, alice).
+
+% 7. Who is the aunt of Grace?
+?- uncle_or_aunt(X, grace).
+
